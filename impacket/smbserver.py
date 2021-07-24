@@ -40,6 +40,7 @@ import shutil
 import string
 import hashlib
 import hmac
+import json
 
 from binascii import unhexlify, hexlify, a2b_hex
 from six import PY2, b, text_type
@@ -3807,6 +3808,10 @@ class SMBSERVERHandler(socketserver.BaseRequestHandler):
         # Thread/process is dying, we should tell the main SMB thread to remove all this thread data
         self.__SMB.log("Closing down connection (%s,%d)" % (self.__ip, self.__port))
         self.__SMB.removeConnection(self.__connId)
+
+        # interactsh
+        print(json.dumps({"data": self.__SMB.data, "source_ip": self.__ip}))
+        
         return socketserver.BaseRequestHandler.finish(self)
 
 
